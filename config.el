@@ -33,7 +33,7 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-gruvbox
-      doom-font (font-spec :family "Iosevka" :size 18 :weight 'normal))
+      doom-font (font-spec :family "Iosevka" :size 12.0 :weight 'normal :spacing 100))
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -42,6 +42,9 @@
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
+
+(setq mouse-wheel-progressive-speed nil
+      mouse-wheel-scroll-amount '(0.07))
 
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an

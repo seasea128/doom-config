@@ -6,7 +6,7 @@
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets. It is optional.
-(setq user-full-name "John Doe"
+(setq user-full-name "Chanon Yothavut"
       user-mail-address "john@doe.com")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom:
@@ -44,8 +44,8 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
-
+(setq org-directory "~/University/")
+(setq org-cite-csl-styles-dir "~/Zotero/styles")
 (setq org-latex-src-block-backend 'engraved)
 (setq org-latex-engraved-theme 'doom-one-light)
 (setq org-latex-caption-above nil)
@@ -88,3 +88,10 @@
 
 (after! dap-mode
   (setq dap-python-debugger 'debugpy))
+
+(after! lsp-mode
+(lsp-register-client
+    (make-lsp-client :new-connection (lsp-tramp-connection "clangd")
+                     :major-modes '(c++-mode)
+                     :remote? t
+                     :server-id 'clangd-remote)))

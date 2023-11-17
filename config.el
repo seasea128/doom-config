@@ -90,8 +90,20 @@
   (setq dap-python-debugger 'debugpy))
 
 (after! lsp-mode
-(lsp-register-client
-    (make-lsp-client :new-connection (lsp-tramp-connection "clangd")
-                     :major-modes '(c++-mode)
-                     :remote? t
-                     :server-id 'clangd-remote)))
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-tramp-connection "clangd")
+                    :major-modes '(c++-mode)
+                    :remote? t
+                    :server-id 'clangd-remote)))
+
+(after! ox-latex
+  (add-to-list 'org-latex-classes
+               '("report-noparts"
+                 "\\documentclass[12pt]{extreport}"
+                 ("\\chapter{%s}" . "\\chapter*{%s}")
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+  )

@@ -32,11 +32,13 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-oksolar-dark
+(setq doom-theme 'doom-Iosvkem
       doom-font (font-spec :family "Iosevka" :size 12.0 :weight 'normal)
       doom-variable-pitch-font (font-spec :family "Iosevka Aile" :size 12.0 :weight 'medium)
       +zen-text-scale 0
       +zen-window-divider-size 4)
+
+(setq doom-gruvbox-dark-variant "hard")
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -52,6 +54,12 @@
 
 (setq mouse-wheel-progressive-speed nil
       mouse-wheel-scroll-amount '(0.07))
+
+;; Disable apheleia for C# since it doesn't respect editorconfig yet
+(add-to-list '+format-on-save-disabled-modes 'csharp-mode)
+
+;; Since apheleia is disabled, lsp-format-buffer is used instead to format the current buffer on save
+(add-hook 'csharp-mode-hook (lambda () (add-hook 'before-save-hook 'lsp-format-buffer nil t)))
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.

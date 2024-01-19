@@ -55,6 +55,8 @@
 (setq mouse-wheel-progressive-speed nil
       mouse-wheel-scroll-amount '(0.07))
 
+(keychain-refresh-environment)
+
 ;; Disable apheleia for C# since it doesn't respect editorconfig yet
 (add-to-list '+format-on-save-disabled-modes 'csharp-mode)
 

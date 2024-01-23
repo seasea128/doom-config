@@ -63,6 +63,15 @@
 ;; Since apheleia is disabled, lsp-format-buffer is used instead to format the current buffer on save
 (add-hook 'csharp-mode-hook (lambda () (add-hook 'before-save-hook 'lsp-format-buffer nil t)))
 
+(map! :map org-mode-map
+      :localleader
+      (:prefix-map ("j" . "citar")
+       :desc "Insert citation" "c" #'citar-insert-citation
+       :desc "Insert reference" "r" #'citar-insert-reference
+       :desc "Open files" "o" #'citar-open-files
+       )
+      )
+
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
 ;;

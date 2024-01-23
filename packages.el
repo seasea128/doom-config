@@ -51,5 +51,6 @@
                                         ;
 (package! engrave-faces :recipe (:host github :repo "tecosaur/engrave-faces"))
 (package! citeproc)
+(package! citar)
 
 (package! keychain-environment)

@@ -63,6 +63,8 @@
 ;; Since apheleia is disabled, lsp-format-buffer is used instead to format the current buffer on save
 (add-hook 'csharp-mode-hook (lambda () (add-hook 'before-save-hook 'lsp-format-buffer nil t)))
 
+(add-to-list 'default-frame-alist '(alpha-background . 95))
+
 (map! :map org-mode-map
       :localleader
       (:prefix-map ("j" . "citar")

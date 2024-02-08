@@ -33,7 +33,7 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-gruvbox
-      doom-font (font-spec :family "Iosevka" :size 12.0 :weight 'normal)
+      doom-font (font-spec :family "Iosevka Term" :size 11.0 :weight 'normal)
       doom-variable-pitch-font (font-spec :family "Iosevka Aile" :size 12.0 :weight 'medium)
       +zen-text-scale 0
       +zen-window-divider-size 4)
@@ -47,6 +47,7 @@
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/University/")
+(setq org-agenda-files (list org-directory))
 (setq org-cite-csl-styles-dir "~/Zotero/styles")
 (setq org-latex-src-block-backend 'engraved)
 (setq org-latex-engraved-theme 'doom-one-light)
@@ -63,7 +64,10 @@
 ;; Since apheleia is disabled, lsp-format-buffer is used instead to format the current buffer on save
 (add-hook 'csharp-mode-hook (lambda () (add-hook 'before-save-hook 'lsp-format-buffer nil t)))
 
-(add-to-list 'default-frame-alist '(alpha-background . 95))
+(add-to-list 'default-frame-alist '(alpha-background . 90))
+
+(defun generateRandStr ()
+  (substring (shell-command-to-string "xxd -l 4 -c 4 -p < /dev/random") 0 -1))
 
 (map! :map org-mode-map
       :localleader
@@ -127,3 +131,4 @@
                  ("\\paragraph{%s}" . "\\paragraph*{%s}")
                  ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
   )
+

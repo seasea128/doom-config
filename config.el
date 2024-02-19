@@ -69,14 +69,17 @@
 (defun generateRandStr ()
   (substring (shell-command-to-string "xxd -l 4 -c 4 -p < /dev/random") 0 -1))
 
+(map! :map csharp-mode-map
+      :localleader
+      (:desc "Sharper" "s" #'sharper-main-transient))
+
 (map! :map org-mode-map
       :localleader
-      (:prefix-map ("j" . "citar")
+      (:prefix ("j" . "citar")
        :desc "Insert citation" "c" #'citar-insert-citation
        :desc "Insert reference" "r" #'citar-insert-reference
        :desc "Open files" "o" #'citar-open-files
-       )
-      )
+       ))
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.

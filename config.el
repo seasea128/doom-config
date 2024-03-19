@@ -33,7 +33,7 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-gruvbox
-      doom-font (font-spec :family "Iosevka Term" :size 11.0 :weight 'normal)
+      doom-font (font-spec :family "Iosevka" :size 11.0 :weight 'normal)
       doom-variable-pitch-font (font-spec :family "Iosevka Aile" :size 12.0 :weight 'medium)
       +zen-text-scale 0
       +zen-window-divider-size 4)
@@ -123,6 +123,10 @@
                     :remote? t
                     :server-id 'clangd-remote)))
 
+(after! org
+  (plist-put org-format-latex-options :scale 1.0)
+  )
+
 (after! ox-latex
   (add-to-list 'org-latex-classes
                '("report-noparts"
@@ -135,3 +139,28 @@
                  ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
   )
 
+(after! treemacs
+  (setq treemacs-position 'right)
+  )
+
+(use-package! ligature
+  :config
+  (ligature-set-ligatures 't '(
+                               "[ERROR]" "[DEBUG]" "[INFO]" "[WARN]" "[WARNING]" "[ERR]" "[FATAL]" "[TRACE]" "[FIXME]" "[TODO]"
+                               "[BUG]" "[NOTE]" "[HACK]" "[MARK]" "# ERROR" "# DEBUG" "# INFO" "# WARN" "# WARNING" "# ERR"
+                               "# FATAL" "# TRACE" "# FIXME" "# TODO" "# BUG" "# NOTE" "# HACK" "# MARK" "// ERROR" "// DEBUG"
+                               "// INFO" "// WARN" "// WARNING" "// ERR" "// FATAL" "// TRACE" "// FIXME" "// TODO" "// BUG"
+                               "// NOTE" "// HACK" "// MARK" "!!" "!=" "!==" "!!!" "!≡" "!≡≡" "!>" "!=<" "#(" "#_" "#{" "#?"
+                               "#>" "##" "#_(" "%=" "%>" "%>%" "%<%" "&%" "&&" "&*" "&+" "&-" "&/" "&=" "&&&" "&>" "$>" "***"
+                               "*=" "*/" "*>" "++" "+++" "+=" "+>" "++=" "--" "-<" "-<<" "-=" "->" "->>" "---" "-->" "-+-"
+                               "-\\/" "-|>" "-<|" ".." "..." "..<" ".>" ".~" ".=" "/*" "//" "/>" "/=" "/==" "///" "/**" ":::"
+                               "::" ":=" ":≡" ":>" ":=>" ":(" ":-(" ":)" ":-)" ":/" ":\\" ":3" ":D" ":P" ":>:" ":<:" "<$>" "<*"
+                               "<*>" "<+>" "<-" "<<" "<<<" "<<=" "<=" "<=>" "<>" "<|>" "<<-" "<|" "<=<" "<~" "<~~" "<<~" "<$"
+                               "<+" "<!>" "<@>" "<#>" "<%>" "<^>" "<&>" "<?>" "<.>" "</>" "<\\>" "<\">" "<:>" "<~>" "<**>"
+                               "<<^" "<!" "<@" "<#" "<%" "<^" "<&" "<?" "<." "</" "<\\" "<\"" "<:" "<->" "<!--" "<--" "<~<"
+                               "<==>" "<|-" "<<|" "<-<" "<-->" "<<==" "<==" "=<<" "==" "===" "==>" "=>" "=~" "=>>" "=/=" "=~="
+                               "==>>" "≡≡" "≡≡≡" "≡:≡" ">-" ">=" ">>" ">>-" ">>=" ">>>" ">=>" ">>^" ">>|" ">!=" ">->" "??" "?~"
+                               "?=" "?>" "???" "?." "^=" "^." "^?" "^.." "^<<" "^>>" "^>" "\\\\" "\\>" "\\/-" "@>" "|=" "||"
+                               "|>" "|||" "|+|" "|->" "|-->" "|=>" "|==>" "|>-" "|<<" "||>" "|>>" "|-" "||-" "~=" "~>" "~~>"
+                               "~>>" "[[" "]]" "\">" "_|_"))
+  (global-ligature-mode t))

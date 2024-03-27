@@ -164,3 +164,6 @@
                                "|>" "|||" "|+|" "|->" "|-->" "|=>" "|==>" "|>-" "|<<" "||>" "|>>" "|-" "||-" "~=" "~>" "~~>"
                                "~>>" "[[" "]]" "\">" "_|_"))
   (global-ligature-mode t))
+
+(add-to-list 'auto-mode-alist '("\\.xaml\\'" . nxml-mode))
+(add-to-list 'auto-mode-alist '("\\.axaml\\'" . nxml-mode))

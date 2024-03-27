@@ -33,7 +33,7 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-gruvbox
-      doom-font (font-spec :family "Iosevka" :size 11.0 :weight 'normal)
+      doom-font (font-spec :family "Iosevka Term Extended" :size 10.0 :weight 'normal)
       doom-variable-pitch-font (font-spec :family "Iosevka Aile" :size 12.0 :weight 'medium)
       +zen-text-scale 0
       +zen-window-divider-size 4)

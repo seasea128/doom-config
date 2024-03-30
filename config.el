@@ -125,6 +125,7 @@
 
 (after! org
   (plist-put org-format-latex-options :scale 1.0)
+  (require 'ox-pandoc)
   )
 
 (after! ox-latex

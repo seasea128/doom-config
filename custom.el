@@ -8,7 +8,7 @@
  '(delete-selection-mode nil)
  '(magit-todos-insert-after '(bottom) nil nil "Changed by setter of obsolete option `magit-todos-insert-at'")
  '(org-agenda-files
-   '("~/Work/Notes/SCBQRAPI.org" "/home/seasea128/University/EEEE2044/Notes/ProgressTest.org" "/home/seasea128/University/EEEE2045/Coursework/CW2/Research.org" "/home/seasea128/University/EEEE2064/Coursework/CW1/CW1Research.org"))
+   '("~/Notes/TODO.org" "/home/seasea128/University/Revision.org" "/home/seasea128/Work/Notes/SCBQRAPI.org"))
  '(warning-suppress-types '((lsp-mode) (defvaralias))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

@@ -32,14 +32,14 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-miramare
-      doom-font (font-spec :family "Iosevka Term Extended" :size 10.0 :weight 'normal)
-      ;;doom-font "Terminus (TTF):pixelsize=18:antialias=off"
+(setq doom-theme 'doom-gruvbox
+      doom-font (font-spec :family "Iosevka Term Extended" :size 11.0 :weight 'normal)
+      ;;doom-font "Terminus (TTF):pixelsize=14:antialias=off"
       doom-variable-pitch-font (font-spec :family "Iosevka Aile" :size 12.0 :weight 'medium)
       +zen-text-scale 0
       +zen-window-divider-size 4)
 
-;;(setq doom-gruvbox-dark-variant "hard")
+(setq doom-gruvbox-dark-variant "hard")
 (setq doom-miramare-brighter-comments t)
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
@@ -73,7 +73,10 @@
 
 (map! :map csharp-mode-map
       :localleader
-      (:desc "Sharper" "s" #'sharper-main-transient))
+      (:desc "Sharper" "s" #'sharper-main-transient)
+      )
+
+(setq lsp-dart-flutter-widget-guides nil)
 
 (map! :map org-mode-map
       :localleader
@@ -125,6 +128,16 @@
                     :remote? t
                     :server-id 'clangd-remote)))
 
+(after! dart-mode
+  (map! :map dart-mode-map
+        :localleader
+        (:prefix ("f". "flutter")
+         :desc "Flutter outline toggle" "o" #'lsp-dart-show-flutter-outline
+         :desc "Outline toggle" "t" #'lsp-dart-show-outline
+         ))
+  )
+
+
 (after! org
   (plist-put org-format-latex-options :scale 1.0)
   (hl-todo-mode)
@@ -146,27 +159,27 @@
   (setq treemacs-position 'right)
   )
 
-(use-package! ligature
-  :config
-  ;;(ligature-set-ligatures 't '(
-  ;;                             "[ERROR]" "[DEBUG]" "[INFO]" "[WARN]" "[WARNING]" "[ERR]" "[FATAL]" "[TRACE]" "[FIXME]" "[TODO]"
-  ;;                             "[BUG]" "[NOTE]" "[HACK]" "[MARK]" "# ERROR" "# DEBUG" "# INFO" "# WARN" "# WARNING" "# ERR"
-  ;;                             "# FATAL" "# TRACE" "# FIXME" "# TODO" "# BUG" "# NOTE" "# HACK" "# MARK" "// ERROR" "// DEBUG"
-  ;;                             "// INFO" "// WARN" "// WARNING" "// ERR" "// FATAL" "// TRACE" "// FIXME" "// TODO" "// BUG"
-  ;;                             "// NOTE" "// HACK" "// MARK" "!!" "!=" "!==" "!!!" "!≡" "!≡≡" "!>" "!=<" "#(" "#_" "#{" "#?"
-  ;;                             "#>" "##" "#_(" "%=" "%>" "%>%" "%<%" "&%" "&&" "&*" "&+" "&-" "&/" "&=" "&&&" "&>" "$>" "***"
-  ;;                             "*=" "*/" "*>" "++" "+++" "+=" "+>" "++=" "--" "-<" "-<<" "-=" "->" "->>" "---" "-->" "-+-"
-  ;;                             "-\\/" "-|>" "-<|" ".." "..." "..<" ".>" ".~" ".=" "/*" "//" "/>" "/=" "/==" "///" "/**" ":::"
-  ;;                             "::" ":=" ":≡" ":>" ":=>" ":(" ":-(" ":)" ":-)" ":/" ":\\" ":3" ":D" ":P" ":>:" ":<:" "<$>" "<*"
-  ;;                             "<*>" "<+>" "<-" "<<" "<<<" "<<=" "<=" "<=>" "<>" "<|>" "<<-" "<|" "<=<" "<~" "<~~" "<<~" "<$"
-  ;;                             "<+" "<!>" "<@>" "<#>" "<%>" "<^>" "<&>" "<?>" "<.>" "</>" "<\\>" "<\">" "<:>" "<~>" "<**>"
-  ;;                             "<<^" "<!" "<@" "<#" "<%" "<^" "<&" "<?" "<." "</" "<\\" "<\"" "<:" "<->" "<!--" "<--" "<~<"
-  ;;                             "<==>" "<|-" "<<|" "<-<" "<-->" "<<==" "<==" "=<<" "==" "===" "==>" "=>" "=~" "=>>" "=/=" "=~="
-  ;;                             "==>>" "≡≡" "≡≡≡" "≡:≡" ">-" ">=" ">>" ">>-" ">>=" ">>>" ">=>" ">>^" ">>|" ">!=" ">->" "??" "?~"
-  ;;                             "?=" "?>" "???" "?." "^=" "^." "^?" "^.." "^<<" "^>>" "^>" "\\\\" "\\>" "\\/-" "@>" "|=" "||"
-  ;;                             "|>" "|||" "|+|" "|->" "|-->" "|=>" "|==>" "|>-" "|<<" "||>" "|>>" "|-" "||-" "~=" "~>" "~~>"
-  ;;                             "~>>" "[[" "]]" "\">" "_|_"))
-  (global-ligature-mode t))
+;;(use-package! ligature
+;;  :config
+;;  ;;(ligature-set-ligatures 't '(
+;;  ;;                             "[ERROR]" "[DEBUG]" "[INFO]" "[WARN]" "[WARNING]" "[ERR]" "[FATAL]" "[TRACE]" "[FIXME]" "[TODO]"
+;;  ;;                             "[BUG]" "[NOTE]" "[HACK]" "[MARK]" "# ERROR" "# DEBUG" "# INFO" "# WARN" "# WARNING" "# ERR"
+;;  ;;                             "# FATAL" "# TRACE" "# FIXME" "# TODO" "# BUG" "# NOTE" "# HACK" "# MARK" "// ERROR" "// DEBUG"
+;;  ;;                             "// INFO" "// WARN" "// WARNING" "// ERR" "// FATAL" "// TRACE" "// FIXME" "// TODO" "// BUG"
+;;  ;;                             "// NOTE" "// HACK" "// MARK" "!!" "!=" "!==" "!!!" "!≡" "!≡≡" "!>" "!=<" "#(" "#_" "#{" "#?"
+;;  ;;                             "#>" "##" "#_(" "%=" "%>" "%>%" "%<%" "&%" "&&" "&*" "&+" "&-" "&/" "&=" "&&&" "&>" "$>" "***"
+;;  ;;                             "*=" "*/" "*>" "++" "+++" "+=" "+>" "++=" "--" "-<" "-<<" "-=" "->" "->>" "---" "-->" "-+-"
+;;  ;;                             "-\\/" "-|>" "-<|" ".." "..." "..<" ".>" ".~" ".=" "/*" "//" "/>" "/=" "/==" "///" "/**" ":::"
+;;  ;;                             "::" ":=" ":≡" ":>" ":=>" ":(" ":-(" ":)" ":-)" ":/" ":\\" ":3" ":D" ":P" ":>:" ":<:" "<$>" "<*"
+;;  ;;                             "<*>" "<+>" "<-" "<<" "<<<" "<<=" "<=" "<=>" "<>" "<|>" "<<-" "<|" "<=<" "<~" "<~~" "<<~" "<$"
+;;  ;;                             "<+" "<!>" "<@>" "<#>" "<%>" "<^>" "<&>" "<?>" "<.>" "</>" "<\\>" "<\">" "<:>" "<~>" "<**>"
+;;  ;;                             "<<^" "<!" "<@" "<#" "<%" "<^" "<&" "<?" "<." "</" "<\\" "<\"" "<:" "<->" "<!--" "<--" "<~<"
+;;  ;;                             "<==>" "<|-" "<<|" "<-<" "<-->" "<<==" "<==" "=<<" "==" "===" "==>" "=>" "=~" "=>>" "=/=" "=~="
+;;  ;;                             "==>>" "≡≡" "≡≡≡" "≡:≡" ">-" ">=" ">>" ">>-" ">>=" ">>>" ">=>" ">>^" ">>|" ">!=" ">->" "??" "?~"
+;;  ;;                             "?=" "?>" "???" "?." "^=" "^." "^?" "^.." "^<<" "^>>" "^>" "\\\\" "\\>" "\\/-" "@>" "|=" "||"
+;;  ;;                             "|>" "|||" "|+|" "|->" "|-->" "|=>" "|==>" "|>-" "|<<" "||>" "|>>" "|-" "||-" "~=" "~>" "~~>"
+;;  ;;                             "~>>" "[[" "]]" "\">" "_|_"))
+;;  (global-ligature-mode t))
 
 (add-to-list 'auto-mode-alist '("\\.xaml\\'" . nxml-mode))
 (add-to-list 'auto-mode-alist '("\\.axaml\\'" . nxml-mode))

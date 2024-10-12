@@ -53,3 +53,4 @@
 (package! citeproc)
 (package! citar)
 (package! keychain-environment)
+(package! ox-ipynb :recipe (:host github :repo "jkitchin/ox-ipynb"))

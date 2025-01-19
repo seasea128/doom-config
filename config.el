@@ -33,9 +33,9 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-gruvbox
-      doom-font (font-spec :family "Iosevka Term Extended" :size 11.0 :weight 'normal)
-      ;;doom-font "Terminus (TTF):pixelsize=14:antialias=off"
-      doom-variable-pitch-font (font-spec :family "Iosevka Aile" :size 12.0 :weight 'medium)
+      doom-font (font-spec :family "Iosevka Term Extended" :size 11.0 :height 1.0 :weight 'normal)
+      ;;doom-font "Terminus (TTF):pixelsize=14:antialias=on"
+      doom-variable-pitch-font (font-spec :family "Iosevka Aile" :size 14.0 :height 3.0 :weight 'medium)
       +zen-text-scale 0
       +zen-window-divider-size 4)
 
@@ -52,7 +52,7 @@
 (setq org-agenda-files (list org-directory))
 (setq org-cite-csl-styles-dir "~/Zotero/styles")
 (setq org-latex-src-block-backend 'engraved)
-(setq org-latex-engraved-theme 'doom-one-light)
+(setq org-latex-engraved-theme 'doom-gruvbox-light)
 (setq org-latex-caption-above nil)
 
 (setq mouse-wheel-progressive-speed nil
@@ -61,10 +61,10 @@
 (keychain-refresh-environment)
 
 ;; Disable apheleia for C# since it doesn't respect editorconfig yet
-(add-to-list '+format-on-save-disabled-modes 'csharp-mode)
+;;(add-to-list '+format-on-save-disabled-modes 'csharp-mode)
 
 ;; Since apheleia is disabled, lsp-format-buffer is used instead to format the current buffer on save
-(add-hook 'csharp-mode-hook (lambda () (add-hook 'before-save-hook 'lsp-format-buffer nil t)))
+;;(add-hook 'csharp-mode-hook (lambda () (add-hook 'before-save-hook (lambda () (+format-with-lsp-mode)))))
 
 (add-to-list 'default-frame-alist '(alpha-background . 90))
 
@@ -76,15 +76,27 @@
       (:desc "Sharper" "s" #'sharper-main-transient)
       )
 
+(map! :map c-mode-map
+      :localleader
+      (:desc "Switch file" "m" #'lsp-clangd-find-other-file)
+      )
+
+(map! :map c++-mode-map
+      :localleader
+      (:desc "Switch file" "m" #'lsp-clangd-find-other-file)
+      )
+
+(setq lsp-clients-clangd-args '("--header-insertion-decorators=0" "--query-driver=/usr/bin/arm-none-eabi-gcc,/usr/bin/arm-none-eabi-g++"))
 (setq lsp-dart-flutter-widget-guides nil)
 
 (map! :map org-mode-map
       :localleader
-      (:prefix ("j" . "citar")
+      (:prefix ("j". "citar")
        :desc "Insert citation" "c" #'citar-insert-citation
        :desc "Insert reference" "r" #'citar-insert-reference
        :desc "Open files" "o" #'citar-open-files
-       ))
+       )
+      )
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
@@ -118,15 +130,24 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
+(after! mixed-pitch-mode
+  (setq mixed-pitch-set-height t)
+  (set-face-attribute 'variable-pitch nil :height 3.0)
+  )
+
 (after! dap-mode
-  (setq dap-python-debugger 'debugpy))
+  (setq dap-python-debugger 'debugpy)
+  )
 
 (after! lsp-mode
   (lsp-register-client
    (make-lsp-client :new-connection (lsp-tramp-connection "clangd")
                     :major-modes '(c++-mode)
                     :remote? t
-                    :server-id 'clangd-remote)))
+                    :server-id 'clangd-remote
+                    )
+   )
+  )
 
 (after! dart-mode
   (map! :map dart-mode-map
@@ -134,9 +155,9 @@
         (:prefix ("f". "flutter")
          :desc "Flutter outline toggle" "o" #'lsp-dart-show-flutter-outline
          :desc "Outline toggle" "t" #'lsp-dart-show-outline
-         ))
+         )
+        )
   )
-
 
 (after! org
   (plist-put org-format-latex-options :scale 1.0)
@@ -181,5 +202,3 @@
 ;;  ;;                             "~>>" "[[" "]]" "\">" "_|_"))
 ;;  (global-ligature-mode t))
 
-(add-to-list 'auto-mode-alist '("\\.xaml\\'" . nxml-mode))
-(add-to-list 'auto-mode-alist '("\\.axaml\\'" . nxml-mode))

@@ -51,6 +51,8 @@
                                         ;
 (package! engrave-faces :recipe (:host github :repo "tecosaur/engrave-faces"))
 (package! citeproc)
-(package! citar)
 (package! keychain-environment)
-(package! ox-ipynb :recipe (:host github :repo "jkitchin/ox-ipynb"))
+
+;; Unused package
+;; (package! citar)
+;; (package! ox-ipynb :recipe (:host github :repo "jkitchin/ox-ipynb"))

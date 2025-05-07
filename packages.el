@@ -52,6 +52,8 @@
 (package! engrave-faces :recipe (:host github :repo "tecosaur/engrave-faces"))
 (package! citeproc)
 (package! keychain-environment)
+(package! protobuf-mode)
+(package! dts-mode)
 
 ;; Unused package
 ;; (package! citar)

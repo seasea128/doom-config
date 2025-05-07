@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: attr_latex
+# uuid:
+# key: attr_latex
+# condition: t
+# --
+#+ATTR_LATEX: :placement [H]

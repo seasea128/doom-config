@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: Figure Header
+# uuid: 5858748a-8e7f-4600-95fb-bb430f562887
+# key: orgheader
+# condition: t
+# --
+#+NAME:
+#+CAPTION:
+#+ATTR_LATEX: :placement [H]

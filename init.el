@@ -190,6 +190,6 @@
        ;;(rss +org)        ; emacs as an RSS reade
        ;;twitter           ; twitter client https://twitter . com/vnought
 
-       :Config
-       ;;l
+       :config
+       ;;literate
        (default +bindings +smartparens))

@@ -32,10 +32,11 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'modus-vivendi
-      doom-font (font-spec :family "Aporetic Sans Mono Term" :size 12.0 :height 1.0 :weight 'normal)
+      doom-font (font-spec :family "Aporetic Sans Mono Term" :size 12.0 :height 1.0 )
       ;;doom-font (font-spec :family "Iosevka Term Extended" :size 12.0 :height 1.0 :weight 'normal)
       ;;doom-font "Terminus (TTF):pixelsize=20:antialias=off"
-      doom-variable-pitch-font (font-spec :family "Inter" :size 10.0 :weight 'medium)
+      ;;doom-variable-pitch-font (font-spec :family "Inter" :size 10.0 :weight 'medium)
+      doom-variable-pitch-font (font-spec :family "Aporetic Sans Mono Term" :size 12.0 :height 1.0)
       +zen-text-scale 0
       +zen-window-divider-size 4)
 

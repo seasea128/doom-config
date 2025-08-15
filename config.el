@@ -32,7 +32,7 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'modus-vivendi
-      doom-font (font-spec :family "Aporetic Sans Mono" :size 12.0 :height 1.0 )
+      doom-font (font-spec :family "Aporetic Sans Mono Term SmEx" :size 11.0)
       ;;doom-font (font-spec :family "Iosevka Term Extended" :size 12.0 :height 1.0 :weight 'normal)
       ;;doom-font "Terminus (TTF):pixelsize=20:antialias=off"
       doom-variable-pitch-font (font-spec :family "Inter" :size 10.0)
@@ -58,6 +58,7 @@
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/University/")
+(setq org-preview-latex-default-process 'dvisvgm)
 (setq org-agenda-files (list org-directory))
 (setq org-cite-csl-styles-dir "~/Zotero/styles")
 (setq citar-bibliography '("~/FinalYearProject/Thesis/Thesis.bib"))
@@ -103,22 +104,20 @@
 
 [LISTINGS-SETUP]")
 
-(add-to-list 'default-frame-alist '(alpha-background . 90))
+(add-to-list 'default-frame-alist '(alpha-background . 75))
 
-(setq mouse-wheel-progressive-speed nil
-      mouse-wheel-scroll-amount '(0.07))
-
-(keychain-refresh-environment)
+(setq mouse-wheel-progressive-speed nil)
+;;(setq mouse-wheel-progressive-speed nil
+;;      mouse-wheel-scroll-amount '(0.07))
 
 ;; Add hook for modeline (doom's +light modeline) in zen mode
 (add-hook 'writeroom-mode-hook #'+modeline-mode)
 
-
-(defun langtool-on-save ()
-  (add-hook 'before-save-hook 'langtool-check-buffer nil 'local)
-  )
-
-(add-hook 'org-mode-hook 'langtool-on-save)
+;;(defun langtool-on-save ()
+;;  (add-hook 'before-save-hook 'langtool-check-buffer nil 'local)
+;;  )
+;;
+;;(add-hook 'org-mode-hook 'langtool-on-save)
 
 (map! :map org-mode-map
       :localleader
@@ -219,14 +218,20 @@
   )
 
 (after! writeroom-mode
-  (setq writeroom-width 120)
+  (setq writeroom-width 100)
   )
 
-(set-eglot-client! 'cc-mode '("ccls" "--init={\"index\": {\"threads\": 3}}"))
+(after! csharp-mode
+  (map! :map csharp-mode-map
+        :localleader
+         :desc "Sharper" "m" #'sharper-main-transient
+        )
+  )
 
 (after! org-mode
   (plist-put org-format-latex-options :scale 1.0)
-  ;;(hl-todo-mode)
+  (plist-put org-format-latex-options :foreground nil)
+  (plist-put org-format-latex-options :background nil)
   (display-line-numbers-mode -1)
   )
 
@@ -285,6 +290,11 @@
   (setq treemacs-position 'right)
   )
 
+(after! dirvish
+  (setq dirvish-side-display-alist '((side . right) (slot . -1))
+        )
+  )
+
 ;; Workspace is shown all the time with this function
 (after! persp-mode
   (defun display-workspaces-in-minibuffer ()
@@ -299,26 +309,3 @@
   )
 
 (setq +doom-dashboard-ascii-banner-fn #'disable-banner)
-
-;;(use-package! ligature
-;;  :config
-;;  ;;(ligature-set-ligatures 't '(
-;;  ;;                             "[ERROR]" "[DEBUG]" "[INFO]" "[WARN]" "[WARNING]" "[ERR]" "[FATAL]" "[TRACE]" "[FIXME]" "[TODO]"
-;;  ;;                             "[BUG]" "[NOTE]" "[HACK]" "[MARK]" "# ERROR" "# DEBUG" "# INFO" "# WARN" "# WARNING" "# ERR"
-;;  ;;                             "# FATAL" "# TRACE" "# FIXME" "# TODO" "# BUG" "# NOTE" "# HACK" "# MARK" "// ERROR" "// DEBUG"
-;;  ;;                             "// INFO" "// WARN" "// WARNING" "// ERR" "// FATAL" "// TRACE" "// FIXME" "// TODO" "// BUG"
-;;  ;;                             "// NOTE" "// HACK" "// MARK" "!!" "!=" "!==" "!!!" "!≡" "!≡≡" "!>" "!=<" "#(" "#_" "#{" "#?"
-;;  ;;                             "#>" "##" "#_(" "%=" "%>" "%>%" "%<%" "&%" "&&" "&*" "&+" "&-" "&/" "&=" "&&&" "&>" "$>" "***"
-;;  ;;                             "*=" "*/" "*>" "++" "+++" "+=" "+>" "++=" "--" "-<" "-<<" "-=" "->" "->>" "---" "-->" "-+-"
-;;  ;;                             "-\\/" "-|>" "-<|" ".." "..." "..<" ".>" ".~" ".=" "/*" "//" "/>" "/=" "/==" "///" "/**" ":::"
-;;  ;;                             "::" ":=" ":≡" ":>" ":=>" ":(" ":-(" ":)" ":-)" ":/" ":\\" ":3" ":D" ":P" ":>:" ":<:" "<$>" "<*"
-;;  ;;                             "<*>" "<+>" "<-" "<<" "<<<" "<<=" "<=" "<=>" "<>" "<|>" "<<-" "<|" "<=<" "<~" "<~~" "<<~" "<$"
-;;  ;;                             "<+" "<!>" "<@>" "<#>" "<%>" "<^>" "<&>" "<?>" "<.>" "</>" "<\\>" "<\">" "<:>" "<~>" "<**>"
-;;  ;;                             "<<^" "<!" "<@" "<#" "<%" "<^" "<&" "<?" "<." "</" "<\\" "<\"" "<:" "<->" "<!--" "<--" "<~<"
-;;  ;;                             "<==>" "<|-" "<<|" "<-<" "<-->" "<<==" "<==" "=<<" "==" "===" "==>" "=>" "=~" "=>>" "=/=" "=~="
-;;  ;;                             "==>>" "≡≡" "≡≡≡" "≡:≡" ">-" ">=" ">>" ">>-" ">>=" ">>>" ">=>" ">>^" ">>|" ">!=" ">->" "??" "?~"
-;;  ;;                             "?=" "?>" "???" "?." "^=" "^." "^?" "^.." "^<<" "^>>" "^>" "\\\\" "\\>" "\\/-" "@>" "|=" "||"
-;;  ;;                             "|>" "|||" "|+|" "|->" "|-->" "|=>" "|==>" "|>-" "|<<" "||>" "|>>" "|-" "||-" "~=" "~>" "~~>"
-;;  ;;                             "~>>" "[[" "]]" "\">" "_|_"))
-;;  (global-ligature-mode t))
-

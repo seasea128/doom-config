@@ -54,6 +54,10 @@
 (package! keychain-environment)
 (package! protobuf-mode)
 (package! dts-mode)
+(package! ef-themes)
+(package! standard-themes)
+(package! org-alert)
+(package! typst-ts-mode :recipe (:host codeberg :repo "meow_king/typst-ts-mode"))
 
 ;; Unused package
 ;; (package! citar)

@@ -10,7 +10,7 @@
 
 (modus-themes-include-derivatives-mode 1)
 ;;(standard-themes-take-over-modus-themes-mode 1)
-;;(modus-themes-load-theme 'ef-bio)
+(modus-themes-load-theme 'modus-vivendi)
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom:
 ;;
@@ -35,11 +35,14 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-gruvbox
+(setq doom-theme 'modus-vivendi
       ;;doom-font (font-spec :family "Aporetic Sans Mono Term SmEx" :size 10.0)
       ;;doom-font (font-spec :family "Aporetic Sans Mono" :size 10.0 :weight 'medium)
       ;;doom-font (font-spec :family "CommitMono" :size 10.0)
-      doom-font (font-spec :family "Iosevka Term" :size 10.0 :height 1.0)
+      doom-font (font-spec :family "Iosevka Custom Semi-Extended" :size 10.0)
+      ;;doom-font (font-spec :family "Input Mono Condensed" :size 10.0 :spacing 100)
+      ;;doom-font (font-spec :family "CommitMonoDev5" :size 10.0 :spacing 100 :slant 'normal)
+      ;;doom-font (font-spec :family "Hack" :size 9.0)
       ;;doom-font "Terminus:pixelsize=12:antialias=off"
       ;;doom-font (font-spec :family "IBM Plex Mono" :size 10.0 :weight 'normal :spacing 110)
       ;;doom-font "Terminus (TTF):pixelsize=20:antialias=off"
@@ -67,6 +70,8 @@
 (setq doom-acario-light-comment-bg nil)
 
 (setq treesit-font-lock-level 3)
+
+(setq lsp-sqls-workspace-config-path "root")
 
 (after! gptel
   (setq gptel-tools
@@ -102,27 +107,27 @@
   (setq gptel-default-mode 'org-mode)
 
   (gptel-make-preset 'local
-                     :backend "Llama.cpp"
-                     :model 'local
-                     :tools '()
-                     )
+    :backend "Llama.cpp"
+    :model 'local
+    :tools '()
+    )
   (gptel-make-preset 'moonshot
-                     :backend "Moonshot"
-                     :model 'kimi-k2-0905-preview
-                     :tools '("$web_search")
-                     )
+    :backend "Moonshot"
+    :model 'kimi-k2-0905-preview
+    :tools '("$web_search")
+    )
 
   (gptel-make-preset 'gemini-flash
-                     :backend "Gemini"
-                     :model 'gemini-2.5-flash
-                     :tools '()
-                     )
+    :backend "Gemini"
+    :model 'gemini-2.5-flash
+    :tools '()
+    )
 
   (gptel-make-preset 'gemini-pro
-                     :backend "Gemini"
-                     :model 'gemini-2.5-pro
-                     :tools '()
-                     )
+    :backend "Gemini"
+    :model 'gemini-2.5-pro
+    :tools '()
+    )
   )
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
@@ -140,36 +145,36 @@
 (global-display-fill-column-indicator-mode 1)
 
 ;; Setup for lsp-booster
-(defun lsp-booster--advice-json-parse (old-fn &rest args)
-  "Try to parse bytecode instead of json."
-  (or
-   (when (equal (following-char) ?#)
-     (let ((bytecode (read (current-buffer))))
-       (when (byte-code-function-p bytecode)
-         (funcall bytecode))))
-   (apply old-fn args)))
-(advice-add (if (progn (require 'json)
-                       (fboundp 'json-parse-buffer))
-                'json-parse-buffer
-              'json-read)
-            :around
-            #'lsp-booster--advice-json-parse)
-
-(defun lsp-booster--advice-final-command (old-fn cmd &optional test?)
-  "Prepend emacs-lsp-booster command to lsp CMD."
-  (let ((orig-result (funcall old-fn cmd test?)))
-    (if (and (not test?)                             ;; for check lsp-server-present?
-             (not (file-remote-p default-directory)) ;; see lsp-resolve-final-command, it would add extra shell wrapper
-             lsp-use-plists
-             (not (functionp 'json-rpc-connection))  ;; native json-rpc
-             (executable-find "emacs-lsp-booster"))
-        (progn
-          (when-let ((command-from-exec-path (executable-find (car orig-result))))  ;; resolve command from exec-path (in case not found in $PATH)
-            (setcar orig-result command-from-exec-path))
-          (message "Using emacs-lsp-booster for %s!" orig-result)
-          (cons "emacs-lsp-booster" orig-result))
-      orig-result)))
-(advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command)
+;; (defun lsp-booster--advice-json-parse (old-fn &rest args)
+;;   "Try to parse bytecode instead of json."
+;;   (or
+;;    (when (equal (following-char) ?#)
+;;      (let ((bytecode (read (current-buffer))))
+;;        (when (byte-code-function-p bytecode)
+;;          (funcall bytecode))))
+;;    (apply old-fn args)))
+;; (advice-add (if (progn (require 'json)
+;;                        (fboundp 'json-parse-buffer))
+;;                 'json-parse-buffer
+;;               'json-read)
+;;             :around
+;;             #'lsp-booster--advice-json-parse)
+;; 
+;; (defun lsp-booster--advice-final-command (old-fn cmd &optional test?)
+;;   "Prepend emacs-lsp-booster command to lsp CMD."
+;;   (let ((orig-result (funcall old-fn cmd test?)))
+;;     (if (and (not test?)                             ;; for check lsp-server-present?
+;;              (not (file-remote-p default-directory)) ;; see lsp-resolve-final-command, it would add extra shell wrapper
+;;              lsp-use-plists
+;;              (not (functionp 'json-rpc-connection))  ;; native json-rpc
+;;              (executable-find "emacs-lsp-booster"))
+;;         (progn
+;;           (when-let ((command-from-exec-path (executable-find (car orig-result))))  ;; resolve command from exec-path (in case not found in $PATH)
+;;             (setcar orig-result command-from-exec-path))
+;;           (message "Using emacs-lsp-booster for %s!" orig-result)
+;;           (cons "emacs-lsp-booster" orig-result))
+;;       orig-result)))
+;; (advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -278,11 +283,19 @@
   :mode "\\.inc\\'"
   )
 
+(use-package! yaml-mode
+  :mode "\\.yaml\\'"
+  )
+
 (after! dap-mode
   (setq dap-python-debugger 'debugpy)
   )
 
 (add-hook 'typst-ts-mode-local-vars-hook #'lsp!)
+
+(after! go-mode
+  (setq flycheck-go-staticcheck-executable "staticcheck")
+  )
 
 (after! lsp-mode
   (add-to-list 'lsp-language-id-configuration '(typst-ts-mode . "typst"))

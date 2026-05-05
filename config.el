@@ -10,7 +10,7 @@
 
 (modus-themes-include-derivatives-mode 1)
 ;;(standard-themes-take-over-modus-themes-mode 1)
-(modus-themes-load-theme 'modus-vivendi)
+;;(modus-themes-load-theme 'ef-owl)
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom:
 ;;
@@ -35,17 +35,23 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'modus-vivendi
+(setq doom-theme 'doom-gruvbox
       ;;doom-font (font-spec :family "Aporetic Sans Mono Term SmEx" :size 10.0)
       ;;doom-font (font-spec :family "Aporetic Sans Mono" :size 10.0 :weight 'medium)
       ;;doom-font (font-spec :family "CommitMono" :size 10.0)
-      doom-font (font-spec :family "Iosevka Custom Semi-Extended" :size 10.0)
+      ;;doom-font (font-spec :family "Iosevka Custom Semi-Extended" :size 10.0)
+      ;;doom-font (font-spec :family "Iosevka Custom" :size 8.0)
+      ;;doom-font "EnvyCodeR Nerd Font Mono:size=12"
+      ;;doom-font (font-spec :family "EnvyCodeR Nerd Font Mono" :size 8.0 :spacing 100)
+      ;;doom-font "Iosevka Custom:pixelsize=12"
       ;;doom-font (font-spec :family "Input Mono Condensed" :size 10.0 :spacing 100)
-      ;;doom-font (font-spec :family "CommitMonoDev5" :size 10.0 :spacing 100 :slant 'normal)
+      doom-font (font-spec :family "CommitMonoDev5" :size 8.0 :spacing 100 :slant 'normal)
       ;;doom-font (font-spec :family "Hack" :size 9.0)
       ;;doom-font "Terminus:pixelsize=12:antialias=off"
       ;;doom-font (font-spec :family "IBM Plex Mono" :size 10.0 :weight 'normal :spacing 110)
-      ;;doom-font "Terminus (TTF):pixelsize=20:antialias=off"
+      ;;doom-font "GohuFont uni11 Nerd Font Mono:pixelsize=11:antialias=on"
+      ;;doom-font "Gohu GohuFont:pixelsize=11:antialias=off"
+      ;;doom-font "Unifont:pixelsize=16:antialias=off"
       doom-variable-pitch-font (font-spec :family "Inter" :size 11.0)
       ;;doom-variable-pitch-font (font-spec :family "Aporetic Sans Mono Term" :size 12.0 :height 1.0)
       +zen-text-scale 0
@@ -58,6 +64,8 @@
       org-alert-notify-cutoff 10
       org-alert-notify-after-event-cutoff 10)
 
+(org-alert-enable)
+
 (setq doom-gruvbox-dark-variant "hard")
 (setq doom-gruvbox-light-variant "hard")
 (setq doom-gruvbox-light-brighter-comments t)
@@ -69,9 +77,21 @@
 (setq doom-acario-light-brighter-comments t)
 (setq doom-acario-light-comment-bg nil)
 
-(setq treesit-font-lock-level 3)
+(setq treesit-font-lock-level 2)
 
 (setq lsp-sqls-workspace-config-path "root")
+
+(set-email-account! "Work"
+                    '((mu4e-sent-folder       . "/Sent")
+                      (mu4e-drafts-folder     . "/Drafts")
+                      (mu4e-trash-folder      . "/Trash")
+                      (mu4e-refile-folder     . "/Inbox")
+                      (smtpmail-smtp-user     . "chanon.y@y-matrix.com"))
+                    t)
+
+(after! csv-mode
+  (add-to-list 'csv-separators ";")
+  ) 
 
 (after! gptel
   (setq gptel-tools
@@ -137,7 +157,7 @@
 (global-hl-line-mode -1)
 (hl-line-mode -1)
 
-(setq doom-modeline-height 25)
+(setq doom-modeline-height 22)
 
 (after! compile
   (setq compilation-scroll-output t)
@@ -216,12 +236,13 @@
       )
 
 (map! :n "SPC d u" #'dape-until)
+(map! :n "SPC TAB g" #'+workspace/switch-to)
 
-(map! :after org-mode
+(map! :after org
       :map org-mode-map
       :localleader
       :desc "Kill noter session" "k" #'org-noter-kill-session
-      (:prefix ("j". "citar")
+      (:prefix-map ("j" . "citar")
        :desc "Insert citation" "c" #'citar-insert-citation
        :desc "Insert reference" "r" #'citar-insert-reference
        :desc "Open files" "o" #'citar-open-files
@@ -272,6 +293,10 @@
   :mode "\\.overlay\\'"
   )
 
+(use-package! just-mode
+  :mode "\\justfile\\'"
+  )
+
 (use-package! typst-ts-mode
   :mode "\\.typ\\'")
 
@@ -286,6 +311,14 @@
 (use-package! yaml-mode
   :mode "\\.yaml\\'"
   )
+
+;; (use-package wingman
+;;   :ensure t
+;;   :init
+;;   ;; Point to your local Ollama instance
+;;   (setq wingman-llama-endpoint "http://localhost:8080/infill")
+;;   :hook (prog-mode . wingman-mode)
+;;   )
 
 (after! dap-mode
   (setq dap-python-debugger 'debugpy)

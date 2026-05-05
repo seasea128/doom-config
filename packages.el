@@ -57,7 +57,9 @@
 (package! ef-themes)
 (package! standard-themes)
 (package! org-alert)
+(package! just-mode)
 (package! typst-ts-mode :recipe (:host codeberg :repo "meow_king/typst-ts-mode"))
+(package! wingman :recipe (:host github :repo "mjrusso/wingman"))
 
 ;; Unused package
 ;; (package! citar)

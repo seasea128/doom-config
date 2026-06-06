@@ -312,6 +312,9 @@
   :mode "\\.yaml\\'"
   )
 
+(use-package! odin-ts-mode
+  :mode "\\.odin\\'")
+
 ;; (use-package wingman
 ;;   :ensure t
 ;;   :init
@@ -320,11 +323,16 @@
 ;;   :hook (prog-mode . wingman-mode)
 ;;   )
 
+(after! treesit
+  (add-to-list 'treesit-language-source-alist
+               '(odin "https://github.com/tree-sitter-grammars/tree-sitter-odin")))
+
 (after! dap-mode
   (setq dap-python-debugger 'debugpy)
   )
 
 (add-hook 'typst-ts-mode-local-vars-hook #'lsp!)
+(add-hook 'odin-ts-mode-hook #'lsp!)
 
 (after! go-mode
   (setq flycheck-go-staticcheck-executable "staticcheck")

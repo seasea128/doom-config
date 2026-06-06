@@ -44,15 +44,16 @@
       ;;doom-font "EnvyCodeR Nerd Font Mono:size=12"
       ;;doom-font (font-spec :family "EnvyCodeR Nerd Font Mono" :size 8.0 :spacing 100)
       ;;doom-font "Iosevka Custom:pixelsize=12"
-      ;;doom-font (font-spec :family "Input Mono Condensed" :size 10.0 :spacing 100)
-      doom-font (font-spec :family "CommitMonoDev5" :size 8.0 :spacing 100 :slant 'normal)
+      ;;doom-font (font-spec :family "Input Mono Condensed" :size 8.0)
+      doom-font (font-spec :family "Ioskeley Mono Semi\-Condensed" :size 10.0)
+      ;;doom-font (font-spec :family "CommitMonoDev5" :size 8.0 :spacing 100 :slant 'normal)
       ;;doom-font (font-spec :family "Hack" :size 9.0)
       ;;doom-font "Terminus:pixelsize=12:antialias=off"
-      ;;doom-font (font-spec :family "IBM Plex Mono" :size 10.0 :weight 'normal :spacing 110)
+      ;;doom-font (font-spec :family "IBM Plex Mono" :size 8.0 :weight 'normal :spacing 110)
       ;;doom-font "GohuFont uni11 Nerd Font Mono:pixelsize=11:antialias=on"
       ;;doom-font "Gohu GohuFont:pixelsize=11:antialias=off"
       ;;doom-font "Unifont:pixelsize=16:antialias=off"
-      doom-variable-pitch-font (font-spec :family "Inter" :size 11.0)
+      doom-variable-pitch-font (font-spec :family "Inter" :size 9.0)
       ;;doom-variable-pitch-font (font-spec :family "Aporetic Sans Mono Term" :size 12.0 :height 1.0)
       +zen-text-scale 0
       +zen-window-divider-size 4)

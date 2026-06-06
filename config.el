@@ -158,7 +158,8 @@
 (global-hl-line-mode -1)
 (hl-line-mode -1)
 
-(setq doom-modeline-height 22)
+;;(setq doom-modeline-height 10)
+(setq +modeline-height 5)
 
 (after! compile
   (setq compilation-scroll-output t)

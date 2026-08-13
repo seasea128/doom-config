@@ -10,7 +10,7 @@
 
 (modus-themes-include-derivatives-mode 1)
 ;;(standard-themes-take-over-modus-themes-mode 1)
-;;(modus-themes-load-theme 'ef-owl)
+(modus-themes-load-theme 'ef-owl)
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom:
 ;;
@@ -35,17 +35,18 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-oksolar-light
+(setq doom-theme 'ef-owl
       ;;doom-font (font-spec :family "Aporetic Sans Mono Term SmEx" :size 10.0)
       ;;doom-font (font-spec :family "Aporetic Sans Mono" :size 10.0 :weight 'medium)
       ;;doom-font (font-spec :family "CommitMono" :size 10.0)
       ;;doom-font (font-spec :family "Iosevka Custom Semi-Extended" :size 10.0)
       ;;doom-font (font-spec :family "Iosevka Custom" :size 8.0)
+      doom-font (font-spec :family "Iosevka Term" :size 10.0)
       ;;doom-font "EnvyCodeR Nerd Font Mono:size=12"
       ;;doom-font (font-spec :family "EnvyCodeR Nerd Font Mono" :size 8.0 :spacing 100)
       ;;doom-font "Iosevka Custom:pixelsize=12"
       ;;doom-font (font-spec :family "Input Mono Condensed" :size 8.0)
-      doom-font (font-spec :family "Ioskeley Mono Semi\-Condensed" :size 10.0)
+      ;;doom-font (font-spec :family "Ioskeley Mono Semi\-Condensed" :size 10.0)
       ;;doom-font (font-spec :family "CommitMonoDev5" :size 8.0 :spacing 100 :slant 'normal)
       ;;doom-font (font-spec :family "Hack" :size 9.0)
       ;;doom-font "Terminus:pixelsize=12:antialias=off"
@@ -125,6 +126,7 @@
   (gptel-make-openai "Llama.cpp" :protocol "http" :stream t :host "localhost:8080" :models '(local))
   (gptel-make-gemini "Gemini" :stream t :key gptel-api-key)
   (gptel-make-deepseek "Deepseek" :stream t :key gptel-api-key)
+  (gptel-make-openai-oauth "Codex" :request-params '(:tools [(:type "web_search")]))
   (setq gptel-default-mode 'org-mode)
 
   (gptel-make-preset 'local
@@ -159,7 +161,7 @@
 (hl-line-mode -1)
 
 ;;(setq doom-modeline-height 10)
-(setq +modeline-height 5)
+(setq +modeline-height 10)
 
 (after! compile
   (setq compilation-scroll-output t)
@@ -213,14 +215,22 @@
         )
       )
 
+;; (setq lsp-clients-angular-language-server-command
+;;       '("node"
+;;         "/usr/lib/node_modules/@angular/language-server"
+;;         "--ngProbeLocations"
+;;         "/usr/lib/node_modules"
+;;         "--tsProbeLocations"
+;;         "/usr/lib/node_modules"
+;;         "--stdio"))
 (setq lsp-clients-angular-language-server-command
-      '("node"
-        "/usr/lib/node_modules/@angular/language-server"
-        "--ngProbeLocations"
-        "/usr/lib/node_modules"
+      '("ngserver"
+        "--stdio"
         "--tsProbeLocations"
-        "/usr/lib/node_modules"
-        "--stdio"))
+        "/home/seasea128/.nvm/versions/node/v22.23.1/lib/node_modules/"
+        "--ngProbeLocations"
+        "/home/seasea128/.nvm/versions/node/v22.23.1/lib/node_modules/@angular/language-server/node_modules/"
+        ))
 
 
 (add-to-list 'default-frame-alist '(alpha-background . 100))
@@ -296,7 +306,7 @@
   )
 
 (use-package! just-mode
-  :mode "\\justfile\\'"
+  :mode "\\justfile\\'" "\\.just\\'"
   )
 
 (use-package! typst-ts-mode
@@ -310,6 +320,14 @@
   :mode "\\.inc\\'"
   )
 
+(use-package! opascal-mode
+  :mode "\\.pas\\'"
+  )
+
+(use-package! hurl-mode
+  :mode "\\.hurl\\'"
+  )
+
 (use-package! yaml-mode
   :mode "\\.yaml\\'"
   )
@@ -317,13 +335,16 @@
 (use-package! odin-ts-mode
   :mode "\\.odin\\'")
 
-;; (use-package wingman
-;;   :ensure t
-;;   :init
-;;   ;; Point to your local Ollama instance
-;;   (setq wingman-llama-endpoint "http://localhost:8080/infill")
-;;   :hook (prog-mode . wingman-mode)
-;;   )
+(use-package! go-mod-ts-mode
+  :mode "\\.mod\\'")
+
+(use-package wingman
+  :ensure t
+  :init
+  ;; Point to your local Ollama instance
+  (setq wingman-llama-endpoint "http://localhost:8080/infill")
+  ;; :hook (prog-mode . wingman-mode)
+  )
 
 (after! treesit
   (add-to-list 'treesit-language-source-alist
@@ -333,11 +354,21 @@
   (setq dap-python-debugger 'debugpy)
   )
 
+(after! evil
+  (map! :v "$" "g$"))
+
 (add-hook 'typst-ts-mode-local-vars-hook #'lsp!)
 (add-hook 'odin-ts-mode-hook #'lsp!)
 
 (after! go-mode
   (setq flycheck-go-staticcheck-executable "staticcheck")
+  )
+
+(after! hurl-mode
+  (map! :map hurl-mode-map
+        :localleader
+        :desc "Send request" "e" #'hurl-mode-send-request-single
+        )
   )
 
 (after! lsp-mode
@@ -346,6 +377,12 @@
                         :new-connection (lsp-stdio-connection "tinymist")
                         :activation-fn (lsp-activate-on "typst")
                         :server-id 'tinymist
+                        ))
+
+  (lsp-register-client (make-lsp-client
+                        :new-connection (lsp-stdio-connection '("buf" "lsp" "serve"))
+                        :activation-fn (lsp-activate-on "proto")
+                        :server-id 'buf-protobuf
                         ))
 
   (lsp-register-client
@@ -497,6 +534,9 @@
         )
   )
 
+(after! compile
+  (set-popup-rule! "^\\*compilation" :ignore t))
+
 ;; Show workspace in normal mode
 (after! persp-mode
   (defun display-workspaces-in-minibuffer ()
@@ -510,4 +550,4 @@
   ()
   )
 
-(setq +doom-dashboard-ascii-banner-fn #'disable-banner)
+(setq +dashboard-ascii-banner-fn #'disable-banner)

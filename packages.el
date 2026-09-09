@@ -59,7 +59,7 @@
 (package! org-alert)
 (package! just-mode)
 (package! hurl-mode :recipe (:host github :repo "JasZhe/hurl-mode"))
-(package! odin-ts-mode :recipe (:host github :repo "Sampie159/odin-ts-mode"))
+;; (package! odin-ts-mode :recipe (:host github :repo "Sampie159/odin-ts-mode"))
 (package! typst-ts-mode :recipe (:host codeberg :repo "meow_king/typst-ts-mode"))
 (package! wingman :recipe (:host github :repo "mjrusso/wingman"))
 (unpin!   gptel)

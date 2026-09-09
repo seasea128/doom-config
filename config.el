@@ -424,6 +424,7 @@
   )
 
 (after! org
+  (add-to-list 'org-src-lang-modes (cons "proto" 'protobuf))
   (plist-put org-format-latex-options :scale 1.0)
   (plist-put org-format-latex-options :foreground nil)
   (plist-put org-format-latex-options :background nil)

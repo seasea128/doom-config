@@ -84,10 +84,10 @@
 (setq lsp-sqls-workspace-config-path "root")
 
 (set-email-account! "Work"
-                    '((mu4e-sent-folder       . "/Sent")
-                      (mu4e-drafts-folder     . "/Drafts")
-                      (mu4e-trash-folder      . "/Trash")
-                      (mu4e-refile-folder     . "/Inbox")
+                    '((mu4e-sent-folder       . "/Work/Sent")
+                      (mu4e-drafts-folder     . "/Work/Drafts")
+                      (mu4e-trash-folder      . "/Work/Trash")
+                      (mu4e-refile-folder     . "/Work/Inbox")
                       (smtpmail-smtp-user     . "chanon.y@y-matrix.com"))
                     t)
 

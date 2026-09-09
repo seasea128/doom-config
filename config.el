@@ -10,7 +10,7 @@
 
 (modus-themes-include-derivatives-mode 1)
 ;;(standard-themes-take-over-modus-themes-mode 1)
-(modus-themes-load-theme 'ef-owl)
+;;(modus-themes-load-theme 'ef-owl)
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom:
 ;;
@@ -35,7 +35,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'ef-owl
+(setq doom-theme 'doom-gruvbox
       ;;doom-font (font-spec :family "Aporetic Sans Mono Term SmEx" :size 10.0)
       ;;doom-font (font-spec :family "Aporetic Sans Mono" :size 10.0 :weight 'medium)
       ;;doom-font (font-spec :family "CommitMono" :size 10.0)

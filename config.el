@@ -521,3 +521,6 @@
   )
 
 (setq +dashboard-ascii-banner-fn #'disable-banner)
+
+(with-eval-after-load 'ghostel
+  (setq ghostel-module-auto-install 'compile))

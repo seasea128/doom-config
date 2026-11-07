@@ -9,8 +9,8 @@
       user-mail-address "john@doe.com")
 
 (modus-themes-include-derivatives-mode 1)
-;;(standard-themes-take-over-modus-themes-mode 1)
-;;(modus-themes-load-theme 'ef-owl)
+;; (standard-themes-take-over-modus-themes-mode 1)
+(modus-themes-load-theme 'ef-owl)
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom:
 ;;
@@ -35,13 +35,18 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-gruvbox
+(setq doom-theme 'ef-owl
       ;;doom-font (font-spec :family "Aporetic Sans Mono Term SmEx" :size 10.0)
       ;;doom-font (font-spec :family "Aporetic Sans Mono" :size 10.0 :weight 'medium)
       ;;doom-font (font-spec :family "CommitMono" :size 10.0)
       ;;doom-font (font-spec :family "Iosevka Custom Semi-Extended" :size 10.0)
       ;;doom-font (font-spec :family "Iosevka Custom" :size 8.0)
-      doom-font (font-spec :family "Iosevka Term" :size 10.0)
+      ;;doom-font (font-spec :family "Monoid" :size 8.0)
+      ;;doom-font "Monoid:size=10:style=Retina"
+      ;;doom-font "Monoid:size=10"
+      ;;doom-font (font-spec :family "Iosevka" :size 8.0)
+      doom-font "Iosevka:pixelsize=11"
+      ;;doom-font "Iosevka Term:size=10"
       ;;doom-font "EnvyCodeR Nerd Font Mono:size=12"
       ;;doom-font (font-spec :family "EnvyCodeR Nerd Font Mono" :size 8.0 :spacing 100)
       ;;doom-font "Iosevka Custom:pixelsize=12"
@@ -54,7 +59,7 @@
       ;;doom-font "GohuFont uni11 Nerd Font Mono:pixelsize=11:antialias=on"
       ;;doom-font "Gohu GohuFont:pixelsize=11:antialias=off"
       ;;doom-font "Unifont:pixelsize=16:antialias=off"
-      doom-variable-pitch-font (font-spec :family "Inter" :size 9.0)
+      doom-variable-pitch-font (font-spec :family "Inter" :size 12.0)
       ;;doom-variable-pitch-font (font-spec :family "Aporetic Sans Mono Term" :size 12.0 :height 1.0)
       +zen-text-scale 0
       +zen-window-divider-size 4)
@@ -90,6 +95,15 @@
                       (mu4e-refile-folder     . "/Work/Inbox")
                       (smtpmail-smtp-user     . "chanon.y@y-matrix.com"))
                     t)
+(setq
+ smtpmail-smtp-server "smtp.m101.websupport.se"
+ smtpmail-smtp-service 465
+ smtpmail-stream-type 'tls
+ smtpmail-smtp-user "chanon.y@y-matrix.com"
+
+ send-mail-function #'smtpmail-send-it
+ message-send-mail-function #'smtpmail-send-it
+ )
 
 (after! csv-mode
   (add-to-list 'csv-separators ";")
@@ -123,7 +137,7 @@
      )
    )
 
-  (gptel-make-openai "Llama.cpp" :protocol "http" :stream t :host "localhost:8080" :models '(local))
+  (gptel-make-openai "Llama.cpp" :protocol "http" :stream t :host "localhost:9931" :models '(local))
   (gptel-make-gemini "Gemini" :stream t :key gptel-api-key)
   (gptel-make-deepseek "Deepseek" :stream t :key gptel-api-key)
   (gptel-make-openai-oauth "Codex" :request-params '(:tools [(:type "web_search")]))
@@ -204,10 +218,25 @@
 
 (add-to-list 'default-frame-alist '(alpha-background . 100))
 
+(defun my/project-todos ()
+  (interactive)
+  (consult-ripgrep
+   (projectile-project-root)
+   "TODO\\|FIXME\\|HACK\\|REVIEW\\|XXX"))
+(map! :leader
+      :desc "Project TODOs"
+      "p t" #'my/project-todos)
+
+(map! :leader
+      :desc "File TODOs"
+      "s t" #'hl-todo-occur)
+
 (setq mouse-wheel-progressive-speed nil)
 
 ;; Add hook for modeline (doom's +light modeline) in zen mode
 (add-hook 'writeroom-mode-hook #'+modeline-mode)
+;; Hook for lsp in protobuf mode
+(add-hook 'protobuf-mode-hook #'lsp)
 
 (map! :after dap-mode
       :map dap-mode-map
@@ -297,6 +326,10 @@
   :mode "\\.hurl\\'"
   )
 
+(use-package! bitbake-ts-mode
+  :mode "\\.bb\\'" "\\.bbappend\\'" "\\.bbclass\\'"
+  )
+
 (use-package! yaml-mode
   :mode "\\.yaml\\'"
   )
@@ -348,6 +381,13 @@
                         :server-id 'tinymist
                         ))
 
+  (add-to-list 'lsp-language-id-configuration '(bitbake-ts-mode . "bitbake"))
+  (lsp-register-client (make-lsp-client
+                        :new-connection (lsp-stdio-connection "language-server-bitbake")
+                        :activation-fn (lsp-activate-on "bitbake")
+                        :server-id 'bitbake
+                        ))
+
   (lsp-register-client (make-lsp-client
                         :new-connection (lsp-stdio-connection '("buf" "lsp" "serve"))
                         :activation-fn (lsp-activate-on "proto")
@@ -359,20 +399,20 @@
                     :major-modes '(c++-mode)
                     :remote? t
                     :server-id 'clangd-remote
-                    )
-   )
-  (map! :map c-mode-map
+                    ))
+
+  (map! :map c-ts-mode-map
         :localleader
         :desc "Switch source/header" "s" #'lsp-clangd-find-other-file
         )
-  (map! :map c++-mode-map
+  (map! :map c++-ts-mode-map
         :localleader
         :desc "Switch source/header" "s" #'lsp-clangd-find-other-file
         )
   )
 
-(after! dart-mode
-  (map! :map dart-mode-map
+(after! dart-ts-mode
+  (map! :map dart-ts-mode-map
         :localleader
         (:prefix ("f". "flutter")
          :desc "Flutter outline toggle" "o" #'lsp-dart-show-flutter-outline
@@ -385,8 +425,12 @@
   (setq writeroom-width 100)
   )
 
-(after! csharp-mode
-  (map! :map csharp-mode-map
+(after! corfu
+  (corfu-popupinfo-mode 1)
+  )
+
+(after! csharp-ts-mode
+  (map! :map csharp-ts-mode-map
         :localleader
         :desc "Sharper" "m" #'sharper-main-transient
         )
